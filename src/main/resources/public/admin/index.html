@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>贷款违约预测系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="/assets/css/global.css" media="all">
+    <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin" style="border-bottom: solid 5px #1aa094;">
+    <div class="layui-header header header-demo">
+        <div class="layui-main">
+            <div class="admin-login-box">
+                <a class="logo" style="left: 0;" href="index.html">
+                    <span style="font-size: 22px;">贷款违约预测系统</span>
+                </a>
+            </div>
+            <ul class="layui-nav admin-header-item">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" class="admin-header-user">
+                        <img src="/assets/images/0.jpg" />
+                        <span id="div_userInfo">隔壁老王,你好!</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-side layui-bg-black" id="admin-side">
+        <ul class="layui-nav layui-nav-tree" lay-filter="leftNav">
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_train.html">数据明细查询</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_lr.html">逻辑回归预测</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_dt.html">决策树预测</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_year.html">逐年贷款数量趋势图</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_employment.html">工作年限与违约关联分析</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_application.html">贷款类别与违约关联分析</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-url="loan_annual.html">年收入与违约关联分析</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="login.html">退出系统</a>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
+        <div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">
+                    <i class="fa fa-dashboard" aria-hidden="true"></i>
+                    <cite>控制面板</cite>
+                </li>
+            </ul>
+            <div class="layui-tab-content" style="min-height: 100%; padding: 5px 0 0 0;">
+                <div class="layui-tab-item layui-show" >
+                    <iframe src="loan_train.html" id="iframInfo" width="100%" height="100%" name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-footer footer footer-demo" id="admin-footer">
+        <div class="layui-main">
+            <p>贷款违约预测系统</p>
+        </div>
+    </div>
+    <div class="site-tree-mobile layui-hide">
+        <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
+
+    <script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/layui/layui.js"></script>
+    <script type="text/javascript" src="/assets/nav.js"></script>
+    <script src="/assets/js/index.js"></script>
+    <script>
+         $(".layui-nav-item a").on('click', function () {
+            var address = $(this).attr("data-url");
+            if (undefined == address || "undefined" == address) {
+                //alert("未配置地址");
+            } else {
+                if ("loginOut" == address) {
+                    loginOut();
+                } else {
+                    $("#iframInfo").attr("src", address);
+                }
+            }
+        })
+        function getLoginUser() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/loan_user/getLoginUser",
+            data: {},
+            success: function (result) {
+                if (result.code == "0") {
+                    $("#div_userInfo").text(result.data.realname + " 欢迎你!");
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function () {
+                layer.msg('服务器错误', {
+                    icon: 5
+                });
+            }
+        });
+    }
+    getLoginUser();
+    </script>
+</div>
+</body>
+
+</html>

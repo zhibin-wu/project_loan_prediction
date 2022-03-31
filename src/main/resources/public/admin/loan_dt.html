@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="/assets/admin/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/admin/css/admin.css"/>
+    <script src="/assets/js/jquery-3.3.1.min.js"></script>
+
+</head>
+
+<body>
+<div class="page-content-wrap" id="studentSearch">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            选择贷款期限：<select style="height:35px;line-height:38px;" name="txt_term" id="txt_term" lay-verify="txt_type" lay-search="">
+            <option value="" style="display:none;"></option>
+            <option value=3>3</option>
+            <option value=5>5</option>
+        </select>
+        </div>
+        <div class="layui-inline">
+            选择工作年限：<select style="height:35px;line-height:38px;" name="txt_employment_length" id="txt_employment_length" lay-verify="txt_type" lay-search="">
+            <option value="" style="display:none;"></option>
+            <option value=1>1</option>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5</option>
+            <option value=6>6</option>
+            <option value=7>7</option>
+            <option value=8>8</option>
+            <option value=9>9</option>
+            <option value=10>10</option>
+        </select>
+        </div>
+        <div class="layui-inline">
+            选择贷款类别：<select style="height:35px;line-height:38px;" name="txt_application_type_cn" id="txt_application_type_cn" lay-verify="txt_type" lay-search="">
+            <option value="" style="display:none;"></option>
+            <option value=个人申请>个人申请</option>
+            <option value=与他人联合申请>与他人联合申请</option>
+        </select>
+        </div>
+        <div class="layui-inline">
+            选择申请贷款年份：<select style="height:35px;line-height:38px;" name="txt_issue_date" id="txt_issue_date" lay-verify="txt_type" lay-search="">
+            <option value="" style="display:none;"></option>
+            <option value=2007>2007</option>
+            <option value=2008>2008</option>
+            <option value=2009>2009</option>
+            <option value=2010>2010</option>
+            <option value=2011>2011</option>
+            <option value=2012>2012</option>
+            <option value=2013>2013</option>
+            <option value=2014>2014</option>
+            <option value=2015>2015</option>
+            <option value=2016>2016</option>
+            <option value=2017>2017</option>
+            <option value=2018>2018</option>
+        </select>
+        </div>
+        <div class="layui-inline">
+            选择是否违约：<select style="height:35px;line-height:38px;" name="txt_is_default" id="txt_is_default" lay-verify="txt_type" lay-search="">
+            <option value=违约>违约</option>
+            <option value=不违约>不违约</option>
+        </select>
+        </div>
+        <button class="layui-btn layui-btn-normal site-demo-active" data-type="search" id="searchStudent">搜索
+        </button>
+        <table width="450px" class="layui-table" lay-data="{ url:'/loan_dt/getAllLoanDt', page:true, id:'idTest',width:1350}" lay-filter="demo">
+            <thead>
+            <tr>
+                <th lay-data="{field:'id', width:100}">ID</th>
+                <th lay-data="{field:'loan_amount', width:100}">贷款金额</th>
+                <th lay-data="{field:'term', width:100}">贷款期限</th>
+                <th lay-data="{field:'installment', width:150}">分期付款金额</th>
+                <th lay-data="{field:'annual_income', width:100}">年收入</th>
+                <th lay-data="{field:'employment_length', width:100}">工作年限</th>
+                <th lay-data="{field:'delinuency_2years', width:200}">贷款2年内违约事件数</th>
+                <th lay-data="{field:'application_type_cn', width:200}">贷款类别</th>
+                <th lay-data="{field:'issue_date', width:150}">申请贷款日期</th>
+                <th lay-data="{field:'is_default', width:150}">违约预测</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <script type="text/html" id="barDemo">
+	</script>
+</div>
+<script src="/assets/admin/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    layui.use('table', function () {
+        var $ = layui.jquery
+        var table = layui.table;
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj)
+        });
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                var detailFrom = layui.layer.open({
+                    title: "查看血压内容",
+                    type: 2,
+                    area: ['300px', '250px'],
+                    success: function (layero, index) {
+                        var body = layui.layer.getChildFrame('body', index);
+                        body.find("#xy_id").text(data.id);
+                        body.find("#xy_loan_amount").text(data.loan_amount);
+                        body.find("#xy_term").text(data.term);
+                        body.find("#xy_installment").text(data.installment);
+                        body.find("#xy_annual_income").text(data.annual_income);
+                        body.find("#xy_employment_length").text(data.employment_length);
+                        body.find("#xy_delinuency_2years").text(data.delinuency_2years);
+                        body.find("#xy_application_type_cn").text(data.application_type_cn);
+                        body.find("#xy_issue_date").text(data.issue_date);
+                        body.find("#is_default").text(data.is_default);
+                    }
+                });
+            }
+        });
+        var active = {
+            search: function () {
+                var term = $("#txt_term").val();
+                var employment_length = $("#txt_employment_length").val();
+                var application_type_cn = $("#txt_application_type_cn").val();
+                var issue_date = $("#txt_issue_date").val();
+                var is_default = $("#txt_is_default").val();
+                table.reload('idTest', {
+                    method: 'POST'
+                    , where: {"term": term,"employment_length":employment_length,"application_type_cn":application_type_cn,"issue_date":issue_date,"is_default":is_default}, page: {curr: 1}
+                })
+            }
+        };
+
+        $('#studentSearch .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+    });
+</script>
+</body>
+
+</html>
